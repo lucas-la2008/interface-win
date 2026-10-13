@@ -1,4 +1,5 @@
 #include "elements/button.hpp"
+#include "elements/baseObject.hpp"
 #include "vectors.hpp"
 
 Button::Button(){
@@ -37,4 +38,14 @@ Button& Button::setBorderColor(float x,float y,float z,float a){
 
 Style Button::getStyle() const{
     return style;
+}
+
+Button& Button::setPosition(float x,float y){
+    BaseObject::setPosition(x, y);
+    return *this;
+}
+
+Button& Button::setSize(float x,float y){
+    BaseObject::setSize(x, y);
+    return *this;
 }

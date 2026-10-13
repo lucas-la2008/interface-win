@@ -11,6 +11,7 @@
 #include <vector>
 #include <memory>
 #include "exceptions/shaderCompileError.hpp"
+#include "../build/bin/generated/shaders.hpp"
 
 // define the offset for the dataVbo
 #define STRIDE_SIZE 12 * sizeof(float) + sizeof(int) + sizeof(bool)
@@ -74,63 +75,6 @@ void Renderer::render(std::vector<std::unique_ptr<BaseObject>>& elements){
     
         glUseProgram(0);
 }
-
-const char *const vertexShaderSource = R"(
-    #version 330 core
-    
-    uniform mat4 projection;
-    
-    layout(location = 0) in vec2 aPos;
-    layout(location = 1) in vec2 aSize;
-    layout(location = 2) in vec2 aPosition;
-    layout(location = 3) in vec4 aColor;
-    layout(location = 4) in vec4 aBorderColor;
-    layout(location = 5) in float aBorderSize;
-    
-    out vec4 vertexColor;
-    out vec4 borderColor;
-    out float borderSize;
-    out vec2 localPos;
-    out vec2 elementSize;
-    
-    void main(){
-        
-      vec2 aFinal = aPos * aSize + aPosition;
-      
-      gl_Position = projection * vec4(aFinal,0.0,1.0); 
-      vertexColor = aColor;
-    
-      borderColor = aBorderColor;
-      borderSize = aBorderSize;
-      localPos = aPos;
-      elementSize = aSize;
-    }
-)";
-
-const char*const fragmentShaderSource = R"(
-    #version 330 core
-    
-    in vec4 vertexColor;
-    in vec4 borderColor;
-    in float borderSize;
-    in vec2 localPos;
-    in vec2 elementSize;
-    
-    
-    out vec4 fragColor;
-    
-    void main() {
-        vec2 edgeDistance =
-            min(localPos, vec2(1.0) - localPos) * elementSize;
-    
-        if (edgeDistance.x < borderSize ||
-            edgeDistance.y < borderSize) {
-            fragColor = vec4(borderColor.x/255.0,borderColor.y/255.0,borderColor.z/255.0,borderColor.w);
-        } else {
-            fragColor = vec4(vertexColor.x/255.0,vertexColor.y/255.0,vertexColor.z/255.0,vertexColor.w);
-        }   
-    }
-)";
 
 void Renderer::init(){
     quadVbo = OpenGL::createVBO();
@@ -212,12 +156,12 @@ void Renderer::init(){
     glBindVertexArray(0);
 
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glShaderSource(vertexShader, 1, &shaders::shader_vert, NULL);
     glCompileShader(vertexShader);
     checkCompileError(vertexShader);
 
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader,1,&fragmentShaderSource, NULL);
+    glShaderSource(fragmentShader,1,&shaders::shader_frag, NULL);
     glCompileShader(fragmentShader);
     checkCompileError(fragmentShader);
 

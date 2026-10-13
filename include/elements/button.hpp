@@ -19,6 +19,10 @@ public:
 
     Button& setBorderColor(float,float,float,float);
 
+    Button& setPosition(float,float);
+
+    Button& setSize(float,float);
+    
     Style getStyle() const override;
 };
 

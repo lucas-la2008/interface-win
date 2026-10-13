@@ -1,10 +1,10 @@
 #version 330 core
 
-in vec4 vertexColor;
-in vec4 borderColor;
-in float borderSize;
+flat in vec4 vertexColor;
+flat in vec4 borderColor;
+flat in float borderSize;
 in vec2 localPos;
-in vec2 elementSize;
+flat in vec2 elementSize;
 
 
 out vec4 fragColor;

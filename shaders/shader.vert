@@ -9,11 +9,11 @@ layout(location = 3) in vec4 aColor;
 layout(location = 4) in vec4 aBorderColor;
 layout(location = 5) in float aBorderSize;
 
-out vec4 vertexColor;
-out vec4 borderColor;
-out float borderSize;
+flat out vec4 vertexColor;
+flat out vec4 borderColor;
+flat out float borderSize;
 out vec2 localPos;
-out vec2 elementSize;
+flat out vec2 elementSize;
 
 void main(){
     
